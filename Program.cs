@@ -13,8 +13,7 @@ namespace spacingOut
         [STAThreadAttribute]
         static void Main(string[] args)
         {
-            int i = 1;
-            while (i==1) {
+            for(;;) {
                 Logger();
                 string str = Console.ReadLine();      // Sets str to what's typed in the console.
                 while (String.IsNullOrEmpty(str) || String.IsNullOrWhiteSpace(str)) { Logger(); str = Console.ReadLine(); } // Checks if the user inputted any text.
@@ -25,17 +24,17 @@ namespace spacingOut
                 Console.ReadKey();
             }
         }
+        
         static void Logger (string rslt = null)
         {
             Console.Clear();
-            if(rslt != null)
+            if(rslt != null || !String.IsNullOrWhiteSpace(rslt))
             {
                 Console.Write($" > {rslt} \n\n\n" +
                 "Copied to Clipboard...\n\n" +
                 "Press Any Key to Restart or Press Ctrl+C to exit...\n\n\n\n\n\n\n\n\n" +
                 "Report any bugs to Damienstamates@gmail.com");
-            } else
-            {
+            } else {
                 Console.Write(" > ");
             }
             
