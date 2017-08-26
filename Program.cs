@@ -6,38 +6,33 @@ namespace spacingOut
     class Program
     {
         /// <summary>
-        /// Main is the structure for the program.
-        /// It takes string and spaces it all out.
+        /// Manipulates first boolean to keep track of what to display without having two methods.
+        /// Removed for(;;) and now using while(true)
         /// </summary>
 
         [STAThreadAttribute]
         static void Main(string[] args)
         {
-            for(;;) {
-                Logger();
-                string str = Console.ReadLine();      // Sets str to what's typed in the console.
-                while (String.IsNullOrEmpty(str) || String.IsNullOrWhiteSpace(str)) { Logger(); str = Console.ReadLine(); } // Checks if the user inputted any text.
-                var chars  = str.ToCharArray();       // Implictly typed variable chars.
-                str        = String.Join(" ", chars); // Rejoins character array, but between every character is a space.
-                Logger(str);            // Spits results out
-                Clipboard.SetText(str); // Sets your clipboard
-                Console.ReadKey();
-            }
-        }
-        
-        static void Logger (string rslt = null)
-        {
-            Console.Clear();
-            if(rslt != null || !String.IsNullOrWhiteSpace(rslt))
+            bool first = true;
+            string str = "";
+            char[] charArr;
+            while(true)
             {
-                Console.Write($" > {rslt} \n\n\n" +
-                "Copied to Clipboard...\n\n" +
-                "Press Any Key to Restart or Press Ctrl+C to exit...\n\n\n\n\n\n\n\n\n" +
-                "Report any bugs to Damienstamates@gmail.com");
-            } else {
-                Console.Write(" > ");
+                Console.Clear();
+                Console.Write(first ? "> " : $"> {str}\n\n\nCopied to Clipboard\n\n\n<Press Any Key to Restart>");
+                if (first)
+                {
+                    Clipboard.SetText(new Func<string>(() => {                           // Creates anonymous arrow method to get string
+                        str = Console.ReadLine();
+                        if (String.IsNullOrEmpty(str) || String.IsNullOrWhiteSpace(str)) // Checks when string is empty, whitespace, or null
+                            return " "; // Stops calculations and returns space
+                        charArr = str.ToCharArray(); // Seperates string by characters
+                        return str = String.Join(" ", charArr); // joins character array with spaces between each letter
+                    })());
+                }
+                else Console.ReadKey();
+                first = !first; // Changes what will run everytime
             }
-            
         }
     }
 }
